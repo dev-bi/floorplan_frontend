@@ -23,8 +23,8 @@
       <h3>{{ selectedLocation }}</h3>
       <h2>Etage: {{ currentFloor }}</h2>
     </div>
-    <button @click="levelUp" class="navigator-button">Stockwerk höher</button>
-    <button @click="levelDown" class="navigator-button">Stockwerk tiefer</button>
+    <button @click="levelDown" class="navigator-button">Stockwerk tiefer &#8595;</button>
+    <button @click="levelUp" class="navigator-button">Stockwerk höher &#8593;</button>
     <div>
       <button @click="init">Init</button>
     </div>

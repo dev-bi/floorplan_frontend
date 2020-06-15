@@ -2,19 +2,19 @@
   <div class="hello">
     <h1>Room Controller Komponente</h1>
     <FloorNavigator v-on:stateChanged="loadSVG"></FloorNavigator>
-    <FloorplanOutput v-bind:svgId="svg"></FloorplanOutput>
+    <OutputController v-bind:svgId="svg"></OutputController>
   </div>
 </template>
 
 <script>
 import FloorNavigator from '@/components/FloorNavigator.vue';
-import FloorplanOutput from '@/components/FloorplanOutput.vue';
+import OutputController from '@/components/OutputController.vue';
 
 export default {
   name: 'RoomControllerComponent',
   components: {
     FloorNavigator,
-    FloorplanOutput,
+    OutputController,
   },
   data() {
     return {
