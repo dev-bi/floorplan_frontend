@@ -1,5 +1,14 @@
 export default class BaseController {
+  /*
+   * BaseController contains all environment data
+   */
   constructor() {
-    this.apiBaseUrl = 'http://localhost/bi-kompass/bi-kompass-component-service/api';
+    this.apiBaseUrl = this.envList.devBI;
+    // this.apiBaseUrl = 'http://localhost/bi-kompass/bi-kompass-component-service/api';
+  }
+
+  envList = {
+    devBI: 'http://localhost/bi-kompass-component-service/api',
+    devHome: 'http://localhost/bi-kompass/bi-kompass-component-service/api',
   }
 }

@@ -2,7 +2,7 @@
   <div>
     <h2>Navigator Komponente</h2>
     <div v-if="locations.length > 0">
-      <select name="location" v-model="selectedLocation">
+      <select name="location" @change="changeLocation" v-model="selectedLocation">
         <option
           v-for="location in locations"
           :key="location.id"
@@ -21,9 +21,10 @@
     </div>
     <div>
       <h3>{{ selectedLocation }}</h3>
+      <h2>Etage: {{ currentFloor }}</h2>
     </div>
-    <button class="navigator-button">Stockwerk höher</button>
-    <button class="navigator-button">Stockwerk tiefer</button>
+    <button @click="levelUp" class="navigator-button">Stockwerk höher</button>
+    <button @click="levelDown" class="navigator-button">Stockwerk tiefer</button>
     <div>
       <button @click="init">Init</button>
     </div>
@@ -40,39 +41,83 @@ export default {
   data() {
     return {
       selectedLocation: {},
-      currentFloor: 1,
       locations: [],
+      currentFloorIndex: 0,
     };
   },
+  computed: {
+    currentSVGId() {
+      if (this.selectedLocation.floors) {
+        return this.selectedLocation.floors[this.currentFloorIndex].svgId;
+      }
+      return '';
+    },
+    currentFloor() {
+      if (this.selectedLocation.floors) {
+        return this.selectedLocation.floors[this.currentFloorIndex].name;
+      }
+      return 'noch nicht geladen';
+    },
+    numberOfFloors() {
+      return this.selectedLocation.floors.length;
+    },
+  },
+  updated() {
+    if (this.currentSVGId === '') return;
+    this.$emit('stateChanged', this.currentSVGId);
+  },
   methods: {
+    changeLocation() {
+      this.currentFloorIndex = 0;
+    },
+    levelUp() {
+      // verschiebe diese Methode in Floor.js
+      if (this.currentFloorIndex < this.numberOfFloors - 1) {
+        this.currentFloorIndex += 1;
+      }
+    },
+    levelDown() {
+      // verschiebe diese Methode in Floor.js
+      if (this.currentFloorIndex > 0) {
+        this.currentFloorIndex -= 1;
+      }
+    },
     init() {
-      const bc = new BaseController();
+      const appController = new BaseController();
       /* hole location und die dazugehörigen Raumpläne */
-      fetch(`${bc.apiBaseUrl}/floorplan/locations`)
-        .then((response) => response.json())
-        .then((data) => {
-          data.forEach((element) => {
-            fetch(`${bc.apiBaseUrl}/floorplan/floors/${element.id}`)
-              .then((responseFloors) => responseFloors.json())
-              .then((dataFloors) => {
+      fetch(`${appController.apiBaseUrl}/floorplan/locations`)
+        .then((locationResponse) => locationResponse.json())
+        .then((locationData) => {
+          locationData.forEach((location) => {
+            // find floors by LocationID
+            fetch(`${appController.apiBaseUrl}/floorplan/floors/${location.id}`)
+              .then((floorplanResponse) => floorplanResponse.json())
+              .then((floorplanData) => {
                 const floorArray = [];
 
-                dataFloors.forEach((floor) => {
+                floorplanData.forEach((floor) => {
                   floorArray.push(new Floor(floor.id, floor.svg_id, floor.level, floor.name));
                 });
 
-                this.locations.push(new Location(element.id, element.description, floorArray));
+                this.locations.push(
+                  new Location(
+                    location.id,
+                    location.description,
+                    floorArray,
+                  ),
+                );
+                /* set first Location as selected */
                 if (Object.keys(this.selectedLocation).length === 0) {
                   this.selectedLocation = {
-                    id: element.id,
-                    description: element.description,
+                    id: location.id,
+                    description: location.description,
                     floors: floorArray,
                   };
                   console.log('IS EMPTY!');
                 }
               });
 
-            // this.locations.push(new Location(element.id, element.description));
+            // this.locations.push(new Location(location.id, location.description));
           });
           console.log(this.locations);
         });

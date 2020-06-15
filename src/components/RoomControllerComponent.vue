@@ -1,17 +1,36 @@
 <template>
   <div class="hello">
     <h1>Room Controller Komponente</h1>
-    <FloorNavigator></FloorNavigator>
+    <FloorNavigator v-on:stateChanged="loadSVG"></FloorNavigator>
+    <FloorplanOutput v-bind:svgId="svg"></FloorplanOutput>
   </div>
 </template>
 
 <script>
 import FloorNavigator from '@/components/FloorNavigator.vue';
+import FloorplanOutput from '@/components/FloorplanOutput.vue';
 
 export default {
   name: 'RoomControllerComponent',
   components: {
     FloorNavigator,
+    FloorplanOutput,
+  },
+  data() {
+    return {
+      svgId: 'nw10og1',
+    };
+  },
+  computed: {
+    svg() {
+      return this.svgId;
+    },
+  },
+  methods: {
+    loadSVG(svgId) {
+      console.log(`load: ${svgId}`);
+      this.svgId = svgId;
+    },
   },
 };
 </script>
