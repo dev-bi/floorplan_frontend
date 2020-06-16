@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Navigator Komponente</h2>
+    <h2>Wähle Gebäude und Etage</h2>
     <div v-if="locations.length > 0">
       <select name="location" @change="changeLocation" v-model="selectedLocation">
         <option
@@ -20,7 +20,7 @@
       <p>Daten werden geladen ...</p>
     </div>
     <div>
-      <h3>{{ selectedLocation }}</h3>
+      <!--<h3>{{ selectedLocation }}</h3>-->
       <h2>Etage: {{ currentFloor }}</h2>
     </div>
     <button @click="levelDown" class="navigator-button">Stockwerk tiefer &#8595;</button>
@@ -40,8 +40,10 @@ export default {
   name: 'FloorNavigator',
   data() {
     return {
+      /* Location Objekt, das gerade selektiert ist. Beinhaltet ein Array aus Floor-Instanzen */
       selectedLocation: {},
       locations: [],
+      /* aktuelle Etage als Index repräsentiert */
       currentFloorIndex: 0,
     };
   },
@@ -63,7 +65,11 @@ export default {
     },
   },
   updated() {
+    console.log('UPDATED ... !');
+    console.log(this.currentSVGId);
     if (this.currentSVGId === '') return;
+    console.log('Bis hier hin ... OK');
+    /* Daten an Elternelement schicken: die SVG Id */
     this.$emit('stateChanged', this.currentSVGId);
   },
   methods: {

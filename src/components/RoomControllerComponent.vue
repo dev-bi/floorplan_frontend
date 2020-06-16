@@ -18,7 +18,7 @@ export default {
   },
   data() {
     return {
-      svgId: 'nw10og1',
+      svgId: '',
     };
   },
   computed: {
