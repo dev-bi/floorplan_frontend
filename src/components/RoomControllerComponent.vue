@@ -2,6 +2,9 @@
   <div class="hello">
     <h1>Room Controller Komponente</h1>
     <FloorNavigator v-on:stateChanged="loadSVG"></FloorNavigator>
+    <RoominfoBox>
+      <h1>Testinformationen</h1>
+    </RoominfoBox>
     <OutputController v-bind:svgId="svg"></OutputController>
   </div>
 </template>
@@ -9,12 +12,14 @@
 <script>
 import FloorNavigator from '@/components/FloorNavigator.vue';
 import OutputController from '@/components/OutputController.vue';
+import RoominfoBox from '@/components/RoominfoBox.vue';
 
 export default {
   name: 'RoomControllerComponent',
   components: {
     FloorNavigator,
     OutputController,
+    RoominfoBox,
   },
   data() {
     return {
