@@ -2,10 +2,9 @@
   <div class="hello">
     <h1>Room Controller Komponente</h1>
     <FloorNavigator v-on:stateChanged="loadSVG"></FloorNavigator>
-    <RoominfoBox>
-      <h1>Testinformationen</h1>
+    <RoominfoBox :uniqueId="uniqueSVGId">
     </RoominfoBox>
-    <OutputController v-bind:svgId="svg"></OutputController>
+    <OutputController v-on:roomSelected="setRoomInfo" v-bind:svgId="svg"></OutputController>
   </div>
 </template>
 
@@ -24,6 +23,7 @@ export default {
   data() {
     return {
       svgId: '',
+      uniqueSVGId: '',
     };
   },
   computed: {
@@ -35,6 +35,10 @@ export default {
     loadSVG(svgId) {
       console.log(`load: ${svgId}`);
       this.svgId = svgId;
+    },
+    setRoomInfo(uniqueSVGId) {
+      console.log(`load Room: ${uniqueSVGId}`);
+      this.uniqueSVGId = uniqueSVGId;
     },
   },
 };

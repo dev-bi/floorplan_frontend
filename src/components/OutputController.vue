@@ -31,6 +31,7 @@ export default {
     return {
       /* SVG als String, wird durch v-html gerendert */
       svgString: '',
+      uniqueSVGId: '',
     };
   },
   computed: {
@@ -43,12 +44,19 @@ export default {
       const mouseOverRoomEvent = event;
 
       if (mouseOverRoomEvent.target.className.baseVal === 'room') {
-        console.log(mouseOverRoomEvent.target.id);
+        // console.log(mouseOverRoomEvent.target.id);
+
+        /* eindeutige RaumID setzen und per $emit an RoomController schicken */
+        this.uniqueSVGId = mouseOverRoomEvent.target.id;
+        console.log('emit method!');
+        this.$emit('roomSelected', this.uniqueSVGId);
+
         mouseOverRoomEvent.target.style.fill = 'rgb(0, 255, 0)';
       }
     },
     unselectRoom(event) {
       const mouseOutRoomEvent = event;
+
       if (mouseOutRoomEvent.target.className.baseVal === 'room') {
         mouseOutRoomEvent.target.style.fill = 'rgb(255, 255, 255)';
       }
