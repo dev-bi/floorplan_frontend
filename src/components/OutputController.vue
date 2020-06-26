@@ -61,6 +61,10 @@ export default {
         mouseOutRoomEvent.target.style.fill = 'rgb(255, 255, 255)';
       }
     },
+    loadRoomData(floorId) {
+      /* fetch all the room data by current floorID */
+      console.log(floorId);
+    },
     setSvgString(svgId) {
       const appController = new BaseController();
       if (svgId === '') return;
