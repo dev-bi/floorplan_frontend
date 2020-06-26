@@ -1,21 +1,27 @@
 export default class Room {
   constructor(
-    id,
-    uniqueSVGId,
-    roomName,
-    roomNickname,
-    roomFunction,
-    description,
-    personArray = [],
+    {
+      id,
+      roomFunction,
+      name,
+      nickname,
+      description,
+      svgUniqueName,
+      floorId,
+    },
+    persons = [],
   ) {
-    this.id = id;
-    this.uniqueSVGId = uniqueSVGId;
-    this.nickname = roomNickname;
-    this.name = roomName;
-    this.roomFunction = roomFunction;
-    this.description = description;
-    if (personArray.isArray()) {
-      this.persons = personArray;
+    Object.assign(this, {
+      id,
+      roomFunction,
+      name,
+      nickname,
+      description,
+      svgUniqueName,
+      floorId,
+    });
+    if (Array.isArray(persons)) {
+      this.persons = persons;
     }
   }
 }

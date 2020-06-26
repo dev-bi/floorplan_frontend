@@ -42,6 +42,7 @@ export default {
     return {
       /* Location Objekt, das gerade selektiert ist. Beinhaltet ein Array aus Floor-Instanzen */
       selectedLocation: {},
+      /* Gebäude, die geladen wurden: mit allen Fluren/Etagen (floors) */
       locations: [],
       /* aktuelle Etage als Index repräsentiert */
       currentFloorIndex: 0,
@@ -53,6 +54,12 @@ export default {
         return this.selectedLocation.floors[this.currentFloorIndex].svgId;
       }
       return '';
+    },
+    currentFloorId() {
+      if (this.selectedLocation.floors) {
+        return this.selectedLocation.floors[this.currentFloorIndex].id;
+      }
+      return 0;
     },
     currentFloor() {
       if (this.selectedLocation.floors) {
@@ -70,7 +77,7 @@ export default {
     if (this.currentSVGId === '') return;
     console.log('Bis hier hin ... OK');
     /* Daten an Elternelement schicken: die SVG Id */
-    this.$emit('stateChanged', this.currentSVGId);
+    this.$emit('stateChanged', this.currentSVGId, this.currentFloorId);
   },
   methods: {
     changeLocation() {
